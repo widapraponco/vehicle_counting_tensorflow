@@ -4,7 +4,7 @@ is_vehicle_detected = [0]
 current_frame_number_list = [0]
 bottom_position_of_detected_vehicle = [0]
 
-def predict_speed(top, bottom, right, left, current_frame_number, crop_img, roi_position):      
+def predict_speed(top, bottom, right, left, current_frame_number, crop_img, roi_position):
         speed = "n.a." # means not available, it is just initialization
         direction = "n.a." # means not available, it is just initialization
         scale_constant = 1 # manual scaling because we did not performed camera calibration
@@ -12,9 +12,9 @@ def predict_speed(top, bottom, right, left, current_frame_number, crop_img, roi_
         update_csv = False
 
         if ((bottom)< 250):
-                scale_constant = 1 # scale_constant is used for manual scaling because we did not performed camera calibration                          
+                scale_constant = 1 # scale_constant is used for manual scaling because we did not performed camera calibration
         elif ((bottom > 250) and (bottom < 320)):
-                scale_constant = 2 # scale_constant is used for manual scaling because we did not performed camera calibration                          
+                scale_constant = 2 # scale_constant is used for manual scaling because we did not performed camera calibration
         else:
                 isInROI = False
 
@@ -35,7 +35,7 @@ def predict_speed(top, bottom, right, left, current_frame_number, crop_img, roi_
         if (isInROI):
                 pixel_length = ((bottom)) - bottom_position_of_detected_vehicle[0]
                 scale_real_length = pixel_length * 44 # multiplied by 44 to convert pixel length to real length in meters (chenge 44 to get length in meters for your case)
-                total_time_passed = (current_frame_number - current_frame_number_list[0]) 
+                total_time_passed = (current_frame_number - current_frame_number_list[0])
                 scale_real_time_passed = total_time_passed * 24 # get the elapsed total time for a vehicle to pass through ROI area (24 = fps)
                 if(scale_real_time_passed != 0):
                         speed = (scale_real_length/scale_real_time_passed)/scale_constant # performing manual scaling because we have not performed camera calibration

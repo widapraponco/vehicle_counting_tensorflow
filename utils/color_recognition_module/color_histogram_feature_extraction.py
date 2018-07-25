@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import itemfreq
-import knn_classifier as knn_classifier
+from . import knn_classifier as knn_classifier
 current_path = os.getcwd()
 
 def color_histogram_of_test_image(test_src_image):
@@ -24,10 +24,10 @@ def color_histogram_of_test_image(test_src_image):
         counter = 0
         for (chan, color) in zip(chans, colors):
                 counter = counter + 1
-        
+
                 hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
                 features.extend(hist)
-        
+
                 # find the peak pixel values for R, G, and B
                 elem = np.argmax(hist)
 
@@ -38,11 +38,11 @@ def color_histogram_of_test_image(test_src_image):
                 elif (counter ==3):
                         red = str(elem)
                         feature_data = red + "," + green + "," + blue
-        with open(current_path+"/utils/color_recognition_module/"+"test.data", "w") as myfile:                                          
+        with open(current_path+"/vehicle_counting_tensorflow/utils/color_recognition_module/"+"test.data", "w") as myfile:
                 myfile.write(feature_data)
 
 def color_histogram_of_training_image(img_name):
-        
+
         # detect image color by using image file name to label training data
         if "red" in img_name:
                 data_source = "red"
@@ -71,10 +71,10 @@ def color_histogram_of_training_image(img_name):
         counter = 0
         for (chan, color) in zip(chans, colors):
                 counter = counter + 1
-                
+
                 hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
                 features.extend(hist)
-                
+
                 # find the peak pixel values for R, G, and B
                 elem = np.argmax(hist)
 
@@ -86,9 +86,9 @@ def color_histogram_of_training_image(img_name):
                         red = str(elem)
                         feature_data = red + "," + green + "," + blue
 
-        with open("training.data", "a") as myfile:              
+        with open("training.data", "a") as myfile:
                 myfile.write(feature_data + "," + data_source + "\n")
-        
+
 def training():
         #red color training images
         for f in os.listdir("./training_dataset/red"):
@@ -117,4 +117,3 @@ def training():
         #blue color training images
         for f in os.listdir("./training_dataset/blue"):
                 color_histogram_of_training_image("./training_dataset/blue/"+f)
-
